@@ -8,11 +8,14 @@
 ## This is a helper function for making final submissions to the Sage Bionetworks DREAM Breast 
 ## Cancer Challenge for validation in the OSLO VAL validation cohort
 
-finalSubmission <- function(parentEntity = NULL, trainedModel = NULL, rSourceFile = NULL){
+finalSubmission <- function(originalEntity = NULL, trainedModel = NULL, rSourceFile = NULL){
   require(synapseClient)
-  parentEntity <- addObject(parentEntity, trainedModel, 'trainedModel')
-  parentEntity <- addFile(parentEntity, rSourceFile)
-  parentEntity <- storeEntity(parentEntity)
-  return(parentEntity)
+  require(sessionTools)
+  sessionSummary <- sessionSummary()
+  originalEntity <- addObject(originalEntity, sessionSummary, 'sessionSummary')
+  originalEntity <- addObject(originalEntity, trainedModel, 'trainedModel')
+  originalEntity <- addFile(originalEntity, rSourceFile)
+  originalEntity <- storeEntity(originalEntity)
+  return(originalEntity)
 }
 
